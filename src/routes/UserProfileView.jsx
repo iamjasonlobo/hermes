@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 function UserProfileView() {
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState([]);
   const [passwords, setPasswords] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
   const [photo, setPhoto] = useState(null);
-  const history = useHistory();
 
   React.useEffect(() => {
     getUserDetails();
@@ -53,23 +51,64 @@ function UserProfileView() {
   };
 
   const handleSignOut = () => {
-    window.location.href = '/auth'; // Redirects to the auth page
-  };
-
-  const handleListServices = () => {
-    history.push('/services'); // Redirect to the 'ServicesView' route
-  };
-
-  const handleListProducts = () => {
-    history.push('/products'); // Redirect to the 'ProductsView' route
+    window.location.href = '/auth';
   };
 
   return (
     <div className="profile-page">
-      {/* ... (existing code) */}
+      <h1>Profile</h1>
+      <form onSubmit={handleSaveChanges}>
+        <div className="form-group">
+          <label htmlFor="firstName">First Name:</label>
+          <input type="text" id="firstName" name="firstName" value={user.firstName} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="lastName">Last Name:</label>
+          <input type="text" id="lastName" name="lastName" value={user.lastName} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="phoneNumber">Phone Number:</label>
+          <input type="text" id="phoneNumber" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input type="text" id="email" name="email" value={user.email} onChange={handleChange} />
+        </div>
+
+        <h2>Change Password</h2>
+        <div className="form-group">
+          <label htmlFor="oldPassword">Old Password:</label>
+          <input type="password" id="oldPassword" name="oldPassword" value={passwords.oldPassword} onChange={handlePasswordChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="newPassword">New Password:</label>
+          <input type="password" id="newPassword" name="newPassword" value={passwords.newPassword} onChange={handlePasswordChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirm New Password:</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" value={passwords.confirmPassword} onChange={handlePasswordChange} />
+        </div>
+
+        <h2>Upload Photo</h2>
+        <div className="form-group">
+          <input type="file" accept="image/*" onChange={handleUploadPhoto} />
+        </div>
+
+        <div className="form-group">
+          <button type="submit">Save Changes</button>
+        </div>
+      </form>
+
+      {errors.length > 0 && (
+        <div>
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
+
       <div className="form-group">
-        <button onClick={handleListServices}>List Services</button>
-        <button onClick={handleListProducts}>List Products</button>
+        <button onClick={handleSignOut}>Sign Out</button>
       </div>
     </div>
   );
