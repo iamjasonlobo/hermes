@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Auth } from 'aws-amplify';
 
 const useFormField = (initialValue) => {
   const [value, setValue] = useState(initialValue);
@@ -42,7 +43,7 @@ const SignupForm = () => {
   const phoneNumber = useFormField('');
   const [error, setError] = useState('');
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     const formError = validateForm({
       email: email.value,
@@ -53,10 +54,26 @@ const SignupForm = () => {
 
     if (formError) {
       setError(formError);
-    } else {
+      return;
+    }
+
+    try {
+      const signUpResponse = await Auth.signUp({
+        username: email.value,
+        password: password.value,
+        attributes: {
+          email: email.value,
+          phone_number: phoneNumber.value, // E.164 number convention
+          // add custom attributes here
+        },
+      });
+
+      console.log(signUpResponse);
       setError('');
-      // Proceed with signup logic
-      console.log('Signup successful');
+      // Redirect user to verification page or show success message
+    } catch (error) {
+      console.error('Error signing up:', error);
+      setError(error.message);
     }
   };
 

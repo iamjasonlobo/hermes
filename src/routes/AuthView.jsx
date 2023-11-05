@@ -1,31 +1,7 @@
-import React, { useState } from 'react';
-import SignupForm from "../components/SignupForm";
-import LoginForm from "../components/LoginForm";
-
 const AuthView = () => {
-  // State to track which form is active, 'signup' or 'login'
-  const [activeForm, setActiveForm] = useState('signup'); // default to 'signup'
-
   return (
     <div>
-      <div>
-        <button
-          onClick={() => setActiveForm('signup')}
-          style={{ backgroundColor: activeForm === 'signup' ? 'blue' : 'grey' }}
-        >
-          Signup
-        </button>
-        <button
-          onClick={() => setActiveForm('login')}
-          style={{ backgroundColor: activeForm === 'login' ? 'blue' : 'grey' }}
-        >
-          Login
-        </button>
-      </div>
-
-      {activeForm === 'signup' && <SignupForm />}
-      {activeForm === 'login' && <LoginForm />}
-
+      <img src="https://media1.giphy.com/media/3ktLJJs5fYT6NP005b/giphy.gif?cid=ecf05e47p3y1mddft7v2dqaufqpkj0ef9b8w22ahsdwxt32v&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Page not found" />
     </div>
   );
 };

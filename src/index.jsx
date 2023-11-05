@@ -1,3 +1,7 @@
+if (typeof global === 'undefined') {
+  window.global = window;
+}
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,6 +19,8 @@ import ServicesDetailView from './routes/ServiceDetailView';
 import ProviderProfileView from './routes/ProviderProfileView';
 import UserProfileView from './routes/UserProfileView';
 import NotFoundView from './routes/NotFoundView';
+
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
