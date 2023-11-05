@@ -57,6 +57,7 @@ function UserProfileView() {
   return (
     <div className="profile-page">
       <h1>Profile</h1>
+      <div className='form-container'>
       <form onSubmit={handleSaveChanges}>
         <div className="form-group">
           <label htmlFor="firstName">First Name:</label>
@@ -98,7 +99,7 @@ function UserProfileView() {
           <button type="submit">Save Changes</button>
         </div>
       </form>
-
+      </div>
       {errors.length > 0 && (
         <div>
           {errors.map((error, index) => (

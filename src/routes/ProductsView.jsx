@@ -33,7 +33,7 @@ const ProductsView = () => {
     // Apply filters to productsData as needed
     // Here we can integrate with real filtering logic in the future
     return productsData.map((product) => (
-      <div key={product.id} className="product-card">
+      <div key={product.id} className="info-card">
         <img src={product.image} alt={product.title} />
         <h2>{product.title}</h2>
         <p>by {product.seller}</p>
@@ -66,6 +66,7 @@ const ProductsView = () => {
 
   return (
     <div>
+      <h1>Products</h1>
       <div className="search-container">
         <input
           type="text"
@@ -99,7 +100,7 @@ const ProductsView = () => {
           {/* Product Ratings options */}
         </select>
       </div>
-      <div className="products-container">
+      <div className="info-container">
         {renderProducts()}
       </div>
     </div>

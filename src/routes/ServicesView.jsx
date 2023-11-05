@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ServiceCard from '../components/ServiceCard'; // Import the ServiceCard component
 
 // Mock data
 const servicesData = [
@@ -9,15 +10,16 @@ const servicesData = [
     provider: 'Jane Doe',
     points: 50,
     stars: 4.5,
-  },{
-    id: 1,
-    photo: 'https://via.placeholder.com/150', // Dummy image
-    name: 'Math Tutoring',
-    provider: 'Jane Doe',
-    points: 50,
-    stars: 4.5,
-  }
-  // ... more services
+  },
+  {
+    id: 2,
+    photo: 'https://via.placeholder.com/150',
+    name: 'Science Tutoring',
+    provider: 'John Smith',
+    points: 70,
+    stars: 4.8,
+  },
+  // ... other services
 ];
 
 const ServicesView = () => {
@@ -32,39 +34,32 @@ const ServicesView = () => {
     // Apply filters to servicesData as needed
     // Here we can integrate with real filtering logic in the future
     return servicesData.map((service) => (
-      <div key={service.id} className="service-card">
-        <img src={service.photo} alt={service.name} />
-        <h2>{service.name}</h2>
-        <p>by {service.provider}</p>
-        <div>Stars: {service.stars}</div>
-        <div>Points to buy: {service.points}</div>
-      </div>
+      <ServiceCard key={service.id} service={service} />
     ));
   };
 
   // Placeholder functions for future filter implementations
   const handleCategoryFilterChange = (e) => {
-    console.log('Category filter to be implemented');
     setSelectedCategory(e.target.value);
   };
 
   const handleSubcategoryFilterChange = (e) => {
-    console.log('Subcategory filter to be implemented');
     setSelectedSubcategory(e.target.value);
   };
 
   const handleRatingFilterChange = (e) => {
-    console.log('Rating filter to be implemented');
     setSelectedRating(e.target.value);
   };
 
-  // Placeholder for integrating with OpenSearch or any search engine in the future
   const handleSearch = () => {
-    console.log('Search functionality to be implemented with OpenSearch or another search service');
+    // Placeholder for search functionality
   };
 
   return (
     <div>
+      <div className="title-bar">
+        <h1>Services</h1>
+      </div>
       <div className="search-container">
         <input
           type="text"
@@ -87,15 +82,15 @@ const ServicesView = () => {
         </label>
         <select value={selectedCategory} onChange={handleCategoryFilterChange}>
           <option value="">Select Category</option>
-          {/* Here you would map over your categories */}
+          {/* Categories would be mapped over here */}
         </select>
         <select value={selectedSubcategory} onChange={handleSubcategoryFilterChange} disabled={!selectedCategory}>
           <option value="">Select Subcategory</option>
-          {/* Subcategories based on selectedCategory */}
+          {/* Subcategories would be mapped over here based on selectedCategory */}
         </select>
         <select value={selectedRating} onChange={handleRatingFilterChange}>
           <option value="">Select Rating</option>
-          {/* Ratings options */}
+          {/* Rating options would be mapped over here */}
         </select>
       </div>
       <div className="services-container">

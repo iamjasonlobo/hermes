@@ -3,18 +3,24 @@ import { Outlet, Link } from "react-router-dom";
 const Layout = () => {
   return (
     <div>
-      <nav>
-        <ul>
-          <li className="home-link" key="home-button">
-            <Link to="/">
-              Home
-            </Link>
-          </li>
-          <li><Link to="/user">Points</Link></li>
-           <li><Link to="/user">Profile</Link></li>
-        </ul>
-      </nav>
-      <Outlet />
+
+<div>
+      <div className="sidenav">
+        <Link className='sidenav-link' to="/services">Find Services</Link>
+        <Link className='sidenav-link' to="/products">Find Products</Link>
+        <Link className='sidenav-link' to="/add-service">Add a Service</Link>
+        <Link className='sidenav-link' to="/add-product">Add Products</Link>
+      <Link className='sidenav-link' to="/user">Profile</Link>
+      <Link className='sidenav-link' to="/user">Points</Link>
+      <img className="sidenav-img" src="https://shimmering-stardust-c75334.netlify.app/assets/peeking.7c0ab599.png" ></img>
+      </div>
+      <div className="whole-page">
+        <Outlet />
+      </div>
+      </div>
+
+
+
     </div>
   );
 };

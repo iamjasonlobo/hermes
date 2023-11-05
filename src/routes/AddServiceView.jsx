@@ -87,6 +87,8 @@ const AddServiceView = () => {
   return (
     <div>
       <h1>Add Service</h1>
+      <img src="https://shimmering-stardust-c75334.netlify.app/assets/crewmates.43d07b24.png" className="small-img" alt="Crewmate" />
+      <div className='form-container'>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Service Name:</label>
@@ -140,6 +142,7 @@ const AddServiceView = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
+      </div>
     </div>
   );
 };
