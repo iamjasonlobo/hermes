@@ -1,11 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; 
+import { Auth } from 'aws-amplify';
+
 
 const categories = [
-  { id: 'tutoring', name: 'Tutoring', subcategories: ['Math', 'Science', 'Literature'] },
-  { id: 'techSupport', name: 'Tech Support', subcategories: ['Computer Repair', 'Software Installation'] },
-  { id: 'artDesign', name: 'Art & Design', subcategories: ['Graphic Design', 'Photography'] },
-  { id: 'other', name: 'Other', subcategories: ['Other'] },
-  // ... add more categories suitable for college students
+  { id: 'tutoring', name: 'Tutoring', subcategories: ['Math', 'Science', 'English', 'History'] },
+  { id: 'techSupport', name: 'Tech Support', subcategories: ['Computer Repair', 'Software Installation', 'IT Consulting'] },
+  { id: 'artDesign', name: 'Art & Design', subcategories: ['Graphic Design', 'Photography', 'Illustration'] },
+  { id: 'writingEditing', name: 'Writing & Editing', subcategories: ['Editing Services', 'Creative Writing', 'Technical Writing'] },
+  { id: 'careerServices', name: 'Career Services', subcategories: ['Resume Writing', 'Interview Prep', 'Internship Search'] },
+  { id: 'personalFitness', name: 'Personal Fitness', subcategories: ['Personal Training', 'Yoga Instruction', 'Nutrition Planning'] },
+  { id: 'entertainment', name: 'Entertainment', subcategories: ['DJ Services', 'Live Music', 'Event Planning'] },
+  { id: 'householdChores', name: 'Household Chores', subcategories: ['Cleaning', 'Laundry', 'Grocery Shopping'] },
+  { id: 'transportation', name: 'Transportation', subcategories: ['Rideshare', 'Moving Assistance', 'Delivery Services'] },
+  { id: 'tutoringLanguages', name: 'Language Tutoring', subcategories: ['Spanish', 'French', 'Mandarin'] },
+  { id: 'beautyWellness', name: 'Beauty & Wellness', subcategories: ['Hair Styling', 'Makeup Artists', 'Massage Therapy'] },
+  { id: 'academicResearch', name: 'Academic Research', subcategories: ['Data Analysis', 'Literature Review', 'Statistical Consultation'] },
+  { id: 'techDevelopment', name: 'Tech Development', subcategories: ['App Development', 'Website Building', 'Coding Lessons'] },
+  { id: 'eventOrganizing', name: 'Event Organizing', subcategories: ['Wedding Planning', 'Corporate Events', 'Birthday Parties'] },
+  { id: 'homeMaintenance', name: 'Home Maintenance', subcategories: ['Plumbing', 'Electrical', 'Landscaping'] },
+  { id: 'legalAssistance', name: 'Legal Assistance', subcategories: ['Contract Review', 'Legal Research', 'Notary Services'] },
+  { id: 'financialServices', name: 'Financial Services', subcategories: ['Tax Preparation', 'Budget Planning', 'Investment Advice'] },
+  { id: 'artsCrafts', name: 'Arts & Crafts', subcategories: ['Custom Artwork', 'Jewelry Making', 'Pottery'] },
+  { id: 'tutoringTestPrep', name: 'Test Prep Tutoring', subcategories: ['SAT/ACT', 'GRE', 'MCAT'] },
+  { id: 'miscellaneous', name: 'Miscellaneous', subcategories: ['Pet Sitting', 'Plant Care', 'Other'] }
 ];
 
 const AddServiceView = () => {
@@ -16,6 +34,14 @@ const AddServiceView = () => {
   const [pricingModel, setPricingModel] = useState('perHr');
   const [points, setPoints] = useState('');
   const [pointsError, setPointsError] = useState('');
+  const [providerUsername, setProviderUsername] = useState('');
+
+  useEffect(() => {
+    // Get the current authenticated user's username
+    Auth.currentAuthenticatedUser()
+      .then(user => setProviderUsername(user.username))
+      .catch(err => console.log(err));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,39 +50,54 @@ const AddServiceView = () => {
       return;
     }
     setPointsError('');
+  
+    // Make sure these keys match your Supabase table column names
 
-    const serviceData = {
-      ServiceName: serviceName,
-      Description: description,
-      Category: category,
-      Subcategory: subcategory,
-      PricingModel: pricingModel,
-      Points: Number(points),
-    };
-
+      const serviceData = {
+        name: serviceName, // Match the database column name
+        provider: providerUsername, // Match the database column name
+        description: description, // Match the database column name
+        category: category, // Match the database column name
+        subcategory: subcategory, // Match the database column name
+        pricingModel: pricingModel, // Match the database column name, it should be camelCase
+        points: Number(points), // Match the database column name
+      };
+  
+    // Replace with your Supabase API endpoint and table name
+    const supabaseUrl = 'https://afeqcqvlzcbzfdqvsusz.supabase.co/rest/v1/services'; // Make sure this is the correct URL
+    const serviceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+  
     try {
-      const response = await fetch('https://tfnvlfm2rl.execute-api.us-east-2.amazonaws.com/API_next/services', {
-        method: 'POST',
+      const response = await axios.post(supabaseUrl, serviceData, {
         headers: {
           'Content-Type': 'application/json',
+          'apikey': serviceRoleKey,
+          'Authorization': `Bearer ${serviceRoleKey}`,
+          'Prefer': 'return=representation',
         },
-        body: JSON.stringify(serviceData),
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const responseData = await response.json();
-      console.log('Service added:', responseData);
+  
+      console.log('Service added:', response.data);
       // Reset form or show success message
     } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-      // Show error message
+      console.error('There was a problem with adding the service:', error);
+      // Log the full error response
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error', error.message);
+      }
     }
+    
   };
-
-
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
     setCategory(newCategory);
