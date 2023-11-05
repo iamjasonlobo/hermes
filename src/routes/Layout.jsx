@@ -37,7 +37,7 @@ const Layout = ({ user }) => {
         <img src="https://i.imgur.com/R0Glr9A.png" width="150px" alt="Logo"></img>
         <Link className='sidenav-link' to="/services">Find Services</Link>
         <Link className='sidenav-link' to="/add-service">Add a Service</Link>
-        <p>Balance: <span style={{ color: '#39CC98' }}>{userPoints} Points</span></p>
+        <p>Balance: <span style={{ color: '#39CC98' }}>{userPoints} OU</span></p>
         <img className="sidenav-img" src="https://shimmering-stardust-c75334.netlify.app/assets/peeking.7c0ab599.png" alt="Peeking Character"></img>
       </div>
       <div className="whole-page">

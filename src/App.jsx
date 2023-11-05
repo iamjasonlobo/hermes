@@ -44,13 +44,19 @@ const App = ({ signOut, user }) => {
   };
 
   useEffect(() => {
-    // Ensure this runs only once after the user logs in
-    console.log('Effect running for user:', user);
-    if (user && user.username) {
-      addUserToDatabase(user.username);
-    }
-  }, [user]); // Depend on the `user` object to ensure this runs once per user login
-
+    const fetchAndAddUserToDatabase = async () => {
+      if (user && user.id) { // Assuming `user.id` is the user ID
+        // Fetch the actual username with the user ID
+        const username = await fetchUsername(user.id);
+        if (username) {
+          addUserToDatabase(username);
+        }
+      }
+    };
+  
+    fetchAndAddUserToDatabase();
+  }, [user]);
+  
   return (
     <div className="home-page">
       <h1>Home</h1>
